@@ -30,6 +30,46 @@
             align-items: center;
             justify-content: space-between;
         }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        a.btn, button.btn {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid #2d2d36;
+            color: #eaeaea;
+            text-decoration: none;
+            background: #24242b;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        a.btn:hover, button.btn:hover {
+            border-color: #4a4a58;
+            background: #2d2d36;
+        }
+        .lang-btn {
+            padding: 8px 12px;
+            background: #24242b;
+            border: 1px solid #2d2d36;
+            border-radius: 8px;
+            color: #eaeaea;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .lang-btn:hover {
+            background: #2d2d36;
+            border-color: #4a4a58;
+        }
+        .lang-btn.active {
+            background: #4a4a58;
+            border-color: #6a6a7a;
+        }
         iframe {
             width: 100%;
             height: 88vh;
@@ -54,29 +94,6 @@
             border-radius: 6px;
             border-left: 3px solid #ff6b6b;
         }
-        .language-switcher {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .lang-btn {
-            padding: 6px 12px;
-            background: #24242b;
-            border: 1px solid #2d2d36;
-            border-radius: 8px;
-            color: #eaeaea;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        .lang-btn:hover {
-            background: #2d2d36;
-            border-color: #4a4a58;
-        }
-        .lang-btn.active {
-            background: #4a4a58;
-            border-color: #6a6a7a;
-        }
     </style>
 </head>
 <body>
@@ -90,20 +107,24 @@
                         Le document est affiché directement ci-dessous.
                         <br><span id="version">Version : v1</span>
                     </div>
-                    <div class="note" id="note">
-                        Note : Si le PDF ne s'affiche pas, vérifiez que le fichier existe à cette adresse :
-                        <br><a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf" 
-                           style="color:#a0a0c0;text-decoration:underline;" 
-                           target="_blank">
-                           https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf
-                        </a>
-                    </div>
-                    
-                    <div class="language-switcher">
-                        <button class="lang-btn active" id="lang-fr" onclick="setLanguage('fr')">Français</button>
-                        <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
-                    </div>
                 </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="lang-btn active" id="lang-fr" onclick="setLanguage('fr')">Français</button>
+                <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
+                <a class="btn" id="download-btn" href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf" download>
+                    Télécharger le PDF
+                </a>
+            </div>
+            
+            <div class="note" id="note">
+                Note : Si le PDF ne s'affiche pas, vérifiez que le fichier existe à cette adresse :
+                <br><a id="pdf-link" href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf" 
+                   style="color:#a0a0c0;text-decoration:underline;" 
+                   target="_blank">
+                   https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf
+                </a>
             </div>
         </div>
         
@@ -125,6 +146,18 @@
     </div>
     
     <script>
+        // URLs des PDFs
+        const pdfUrls = {
+            fr: "https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf",
+            en: "https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Field_Note_Moltbook_a_contribution_auto-trad_eng.pdf"
+        };
+
+        // Noms de fichiers pour le téléchargement
+        const downloadNames = {
+            fr: "Note_de_terrain_MoltBook_une_contribution.pdf",
+            en: "Field_Note_Moltbook_a_contribution_auto-trad_eng.pdf"
+        };
+
         // Traductions
         const translations = {
             fr: {
@@ -133,6 +166,7 @@
                 description: "Le document est affiché directement ci-dessous.",
                 version: "Version : v1",
                 note: "Note : Si le PDF ne s'affiche pas, vérifiez que le fichier existe à cette adresse :",
+                downloadBtn: "Télécharger le PDF",
                 fallback: {
                     title: "Votre navigateur ne supporte pas l'affichage des PDF.",
                     options: "Vous pouvez :",
@@ -148,6 +182,7 @@
                 description: "The document is displayed directly below.",
                 version: "Version: v1",
                 note: "Note: If the PDF does not display, check that the file exists at this address:",
+                downloadBtn: "Download PDF",
                 fallback: {
                     title: "Your browser does not support PDF display.",
                     options: "You can:",
@@ -172,11 +207,17 @@
             document.getElementById('description').innerHTML = 
                 `${t.description}<br><span id="version">${t.version}</span>`;
             document.getElementById('note').innerHTML = 
-                `${t.note}<br><a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf" 
+                `${t.note}<br><a id="pdf-link" href="${pdfUrls[lang]}" 
                            style="color:#a0a0c0;text-decoration:underline;" 
                            target="_blank">
-                           https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf
+                           ${pdfUrls[lang]}
                         </a>`;
+            
+            // Mettre à jour le bouton de téléchargement
+            const downloadBtn = document.getElementById('download-btn');
+            downloadBtn.href = pdfUrls[lang];
+            downloadBtn.download = downloadNames[lang];
+            downloadBtn.textContent = t.downloadBtn;
             
             // Mettre à jour le titre de la page
             document.title = t.pageTitle;
@@ -195,12 +236,17 @@
                     <br><br>
                     ${t.fallback.options}
                     <ul>
-                        <li><a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf" target="_blank">${t.fallback.option1}</a></li>
+                        <li><a href="${pdfUrls[lang]}" target="_blank">${t.fallback.option1}</a></li>
                         <li><a href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/tag/v1" target="_blank">${t.fallback.option2}</a></li>
                         <li><a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/" target="_blank">${t.fallback.option3}</a></li>
                     </ul>
                 `;
             }
+            
+            // Changer le PDF affiché dans l'iframe
+            const iframe = document.getElementById('pdf-frame');
+            const timestamp = new Date().getTime();
+            iframe.src = pdfUrls[lang] + (pdfUrls[lang].includes('?') ? '&' : '?') + 't=' + timestamp;
             
             // Sauvegarder la préférence de langue
             localStorage.setItem('preferredLanguage', lang);
@@ -220,13 +266,8 @@
             // Appliquer la langue
             setLanguage(lang);
             
-            // Forcer le rechargement sans cache du PDF
-            const iframe = document.getElementById('pdf-frame');
-            const originalSrc = iframe.src;
-            const timestamp = new Date().getTime();
-            iframe.src = originalSrc + (originalSrc.includes('?') ? '&' : '?') + 't=' + timestamp;
-            
             // Vérifier si le PDF est accessible
+            const iframe = document.getElementById('pdf-frame');
             fetch(iframe.src, { method: 'HEAD' })
                 .then(response => {
                     if (!response.ok) {
