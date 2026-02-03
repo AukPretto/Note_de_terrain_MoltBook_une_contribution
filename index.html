@@ -86,13 +86,25 @@
             margin-top: 8px;
         }
         .note {
-            color: #ff6b6b;
-            font-size: 14px;
-            margin-top: 10px;
+            color: #888;
+            font-size: 12px;
+            margin-top: 20px;
             padding: 8px;
-            background: rgba(255, 107, 107, 0.1);
+            background: rgba(136, 136, 136, 0.05);
             border-radius: 6px;
-            border-left: 3px solid #ff6b6b;
+            border-left: 1px solid #444;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .note:hover {
+            opacity: 0.8;
+        }
+        .note a {
+            color: #a0a0c0;
+            text-decoration: underline;
+        }
+        .note a:hover {
+            color: #c0c0ff;
         }
         .success {
             color: #6bff6b;
@@ -128,15 +140,6 @@
             </div>
             
             <div id="status-message"></div>
-            
-            <div class="note" id="note">
-                Note : Si le PDF ne s'affiche pas, vérifiez que le fichier existe à cette adresse :
-                <br><a id="pdf-link" href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf" 
-                   style="color:#a0a0c0;text-decoration:underline;" 
-                   target="_blank">
-                   https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf
-                </a>
-            </div>
         </div>
         
         <!-- Intégration du PDF -->
@@ -154,19 +157,27 @@
                 </ul>
             </div>
         </iframe>
+        
+        <!-- Note discrète en bas du document -->
+        <div class="note" id="note">
+            Note : Si le PDF ne s'affiche pas, vérifiez que le fichier existe à cette adresse :
+            <br><a id="pdf-link" href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf" target="_blank">
+                https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf
+            </a>
+        </div>
     </div>
     
     <script>
-        // URLs des PDFs depuis la release v1.1
+        // URLs des PDFs depuis la release v1.1 - CORRIGÉ avec "auto-tard_eng"
         const pdfUrls = {
             fr: "https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf",
-            en: "https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Field_Note_Moltbook_a_contribution_auto-trad_eng.pdf"
+            en: "https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf"
         };
 
         // Noms de fichiers pour le téléchargement
         const downloadNames = {
             fr: "Note_de_terrain_MoltBook_une_contribution.pdf",
-            en: "Field_Note_Moltbook_a_contribution_auto-trad_eng.pdf"
+            en: "Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf"
         };
 
         // Traductions
@@ -212,6 +223,7 @@
                 statusDiv.className = 'success';
             } else {
                 statusDiv.className = 'note';
+                statusDiv.style.opacity = '0.8';
             }
             statusDiv.innerHTML = message;
             statusDiv.style.display = 'block';
@@ -235,11 +247,9 @@
             document.getElementById('description').innerHTML = 
                 `${t.description}<br><span id="version">${t.version}</span>`;
             document.getElementById('note').innerHTML = 
-                `${t.note}<br><a id="pdf-link" href="${pdfUrls[lang]}" 
-                           style="color:#a0a0c0;text-decoration:underline;" 
-                           target="_blank">
-                           ${pdfUrls[lang]}
-                        </a>`;
+                `${t.note}<br><a id="pdf-link" href="${pdfUrls[lang]}" target="_blank">
+                    ${pdfUrls[lang]}
+                </a>`;
             
             // Mettre à jour le bouton de téléchargement
             const downloadBtn = document.getElementById('download-btn');
