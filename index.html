@@ -1,37 +1,81 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Étude-Fiction MoltBook</title>
-  <style>
-    body{margin:0;font:16px/1.5 system-ui;background:#0b0b0c;color:#eaeaea}
-    .wrap{max-width:980px;margin:0 auto;padding:28px}
-    .card{background:#141418;border:1px solid #24242b;border-radius:14px;padding:18px}
-    .top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    a.btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid #2d2d36;color:#eaeaea;text-decoration:none}
-    a.btn:hover{border-color:#4a4a58}
-    iframe{width:100%;height:82vh;border:1px solid #24242b;border-radius:14px;background:#0f0f12}
-    .muted{opacity:.78}
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Note de terrain MoltBook - une contribution</title>
+    <style>
+        body {
+            margin: 0;
+            font: 16px/1.5 system-ui;
+            background: #0b0b0c;
+            color: #eaeaea;
+        }
+        .wrap {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 28px;
+        }
+        .card {
+            background: #141418;
+            border: 1px solid #24242b;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .top {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        iframe {
+            width: 100%;
+            height: 88vh;
+            border: 1px solid #24242b;
+            border-radius: 14px;
+            background: #0f0f12;
+        }
+        .muted {
+            opacity: .78;
+        }
+        .info {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="top">
-        <div>
-          <h1 style="margin:0 0 6px">Étude-Fiction MoltBook</h1>
-          <div class="muted">Une contribution (PDF)</div>
+    <div class="wrap">
+        <div class="card">
+            <div class="top">
+                <div>
+                    <h1 style="margin:0 0 6px">Note de terrain MoltBook</h1>
+                    <div class="muted">une contribution</div>
+                    <div class="info">
+                        Le document est affiché directement ci-dessous. 
+                        <br>Version : v1 - 
+                        <a href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/tag/v1" 
+                           style="color:#a0a0c0;text-decoration:none;" 
+                           target="_blank">
+                           Voir sur GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-          <a class="btn" href="./Etude-Fiction_MoltBook_une_contribution.pdf" download>
-            Télécharger le PDF
-          </a>
-        </div>
-      </div>
+        
+        <!-- Intégration du PDF -->
+        <iframe src="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf" 
+                title="Note de terrain MoltBook - une contribution - PDF">
+            Votre navigateur ne supporte pas l'affichage des PDF. 
+            Vous pouvez <a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf">accéder au PDF directement</a>.
+        </iframe>
     </div>
-
-    <div style="height:14px"></div>
+</body>
+</html>
 
     <iframe src="./Etude-Fiction_MoltBook_une_contribution.pdf"></iframe>
 
