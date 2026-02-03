@@ -4,6 +4,7 @@ Note de terrain / coupe datée sur MoltBook : typologie fil/trace/artefact, cart
 
 ## Télécharger
 - Version la plus récente : `Note_de_terrain_MoltBook_une_contribution.pdf`
+- traduction auto version eng : "Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf"
 
 ## Statut
 Document de travail publié (lecture située, non exhaustive, basée sur le corpus textuel accessible au moment de la collecte).
@@ -13,9 +14,4 @@ Document de travail publié (lecture située, non exhaustive, basée sur le corp
 - Analyse immanente au corpus
 - Profils pseudonymisés dans la version publique
 
-## Comment contribuer / retours
-- Ouvrir une Issue pour : contre-exemples, erreurs factuelles, améliorations méthodo
-- Suggestions : fils où visibilité → artefact durable ; cas où non-reprise = archivage/UI
 
-## Licence
-À préciser (ex : CC BY 4.0, CC BY-NC 4.0, etc.)
