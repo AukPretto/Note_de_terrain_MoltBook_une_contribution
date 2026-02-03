@@ -78,8 +78,9 @@
             border-radius: 14px;
             background: #0f0f12;
             overflow: hidden;
+            position: relative;
         }
-        embed {
+        iframe {
             width: 100%;
             height: 100%;
             border: none;
@@ -106,6 +107,14 @@
             font-size: 12px;
             opacity: 0.6;
             font-style: italic;
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #888;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -136,16 +145,18 @@
 
         <!-- Intégration du PDF -->
         <div class="pdf-container" id="pdf-container">
-            <embed 
-                id="pdf-embed" 
-                src="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf#view=FitH"
-                type="application/pdf"
-                title="Note de terrain MoltBook - une contribution - PDF">
+            <div class="loading" id="loading">Chargement du PDF...</div>
+            <iframe 
+                id="pdf-frame" 
+                src=""
+                title="Note de terrain MoltBook - une contribution - PDF"
+                style="display:none;">
+            </iframe>
         </div>
 
         <!-- Note discrète en bas -->
         <div class="note" id="note">
-            Note : Le PDF est affiché directement dans votre navigateur. 
+            Note : Le PDF est affiché via un lecteur intégré. 
             Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.
         </div>
     </div>
@@ -171,8 +182,9 @@
                 description: "Le document est affiché directement ci-dessous.",
                 version: "Version : v1.1",
                 downloadBtn: "📥 Télécharger le PDF",
-                note: "Note : Le PDF est affiché directement dans votre navigateur. Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.",
+                note: "Note : Le PDF est affiché via un lecteur intégré. Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.",
                 pageTitle: "Note de terrain MoltBook - une contribution",
+                loading: "Chargement du PDF...",
                 showAutoTrad: false
             },
             en: {
@@ -181,8 +193,9 @@
                 description: "The document is displayed directly below.",
                 version: "Version: v1.1",
                 downloadBtn: "📥 Download PDF (auto-translated)",
-                note: "Note: The PDF is displayed directly in your browser. If the display does not work, use the download button above.",
+                note: "Note: The PDF is displayed via an integrated viewer. If the display does not work, use the download button above.",
                 pageTitle: "Field Note MoltBook - a contribution",
+                loading: "Loading PDF...",
                 showAutoTrad: true
             }
         };
@@ -199,6 +212,7 @@
             document.getElementById('subtitle').textContent = t.subtitle;
             document.getElementById('description').innerHTML = `${t.description}<br><span id="version">${t.version}</span><span id="auto-trad-notice" class="auto-trad" style="display:${t.showAutoTrad ? 'inline' : 'none'};"> - (traduction automatique)</span>`;
             document.getElementById('note').textContent = t.note;
+            document.getElementById('loading').textContent = t.loading;
 
             // Mettre à jour le bouton de téléchargement
             const downloadBtn = document.getElementById('download-btn');
@@ -212,23 +226,37 @@
             // Mettre à jour l'attribut lang de l'élément html
             document.documentElement.lang = lang;
 
-            // Changer le PDF affiché - méthode: recréer l'élément embed
-            const container = document.getElementById('pdf-container');
-            const oldEmbed = document.getElementById('pdf-embed');
+            // Charger le PDF dans l'iframe en utilisant Mozilla PDF.js viewer
+            const iframe = document.getElementById('pdf-frame');
+            const loading = document.getElementById('loading');
             
-            // Créer un nouvel élément embed
-            const newEmbed = document.createElement('embed');
-            newEmbed.id = 'pdf-embed';
-            newEmbed.src = pdfUrls[lang] + '#view=FitH&toolbar=1';
-            newEmbed.type = 'application/pdf';
-            newEmbed.title = `${t.title} - ${t.subtitle} - PDF`;
-            newEmbed.style.width = '100%';
-            newEmbed.style.height = '100%';
-            newEmbed.style.border = 'none';
+            // Afficher le message de chargement
+            loading.style.display = 'block';
+            iframe.style.display = 'none';
             
-            // Remplacer l'ancien embed par le nouveau
-            container.removeChild(oldEmbed);
-            container.appendChild(newEmbed);
+            // Encoder l'URL du PDF pour PDF.js
+            const encodedPdfUrl = encodeURIComponent(pdfUrls[lang]);
+            
+            // Utiliser le viewer PDF.js hébergé par Mozilla
+            iframe.src = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodedPdfUrl}`;
+            
+            // Mettre à jour le titre de l'iframe
+            iframe.title = `${t.title} - ${t.subtitle} - PDF`;
+            
+            // Attendre que l'iframe soit chargée
+            iframe.onload = function() {
+                loading.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+            
+            // En cas d'erreur, masquer le loading après 3 secondes
+            setTimeout(function() {
+                if (loading.style.display !== 'none') {
+                    loading.textContent = lang === 'fr' 
+                        ? 'Le PDF ne peut pas être affiché. Utilisez le bouton de téléchargement.' 
+                        : 'The PDF cannot be displayed. Use the download button.';
+                }
+            }, 5000);
 
             // Sauvegarder la préférence de langue
             localStorage.setItem('preferredLanguage', lang);
@@ -246,9 +274,7 @@
             const lang = savedLang || (browserLang === 'en' ? 'en' : 'fr');
             
             // Appliquer la langue
-            if (lang !== 'fr') {
-                setLanguage(lang);
-            }
+            setLanguage(lang);
         });
     </script>
 </body>
