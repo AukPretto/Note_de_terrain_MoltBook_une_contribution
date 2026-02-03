@@ -1,252 +1,264 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Note de terrain MoltBook - une contribution</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             margin: 0;
-            font: 16px/1.5 system-ui;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
             background: #0b0b0c;
             color: #eaeaea;
+            line-height: 1.6;
         }
-        .wrap {
-            max-width: 980px;
+        
+        .container {
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 28px;
+            padding: 20px;
         }
-        .card {
+        
+        .header-card {
             background: #141418;
             border: 1px solid #24242b;
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 14px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
-        .top {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+        
+        h1 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            color: #eaeaea;
         }
-        .btn-group {
+        
+        .subtitle {
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .version {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .auto-trad-badge {
+            display: none;
+            font-size: 12px;
+            color: #ffaa00;
+            font-style: italic;
+            margin-left: 8px;
+        }
+        
+        .controls {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #24242b;
         }
-        a.btn, button.btn {
-            display: inline-block;
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid #2d2d36;
-            color: #eaeaea;
-            text-decoration: none;
-            background: #24242b;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            font-family: system-ui;
-        }
-        a.btn:hover, button.btn:hover {
-            border-color: #4a4a58;
-            background: #2d2d36;
-        }
-        .lang-btn {
-            padding: 8px 12px;
-            background: #24242b;
+        
+        button {
+            padding: 10px 16px;
             border: 1px solid #2d2d36;
             border-radius: 8px;
+            background: #24242b;
             color: #eaeaea;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s;
+            font-family: inherit;
+            transition: all 0.2s;
         }
-        .lang-btn:hover {
+        
+        button:hover {
             background: #2d2d36;
             border-color: #4a4a58;
         }
-        .lang-btn.active {
+        
+        button.active {
             background: #4a4a58;
             border-color: #6a6a7a;
         }
-        .pdf-container {
+        
+        .download-btn {
+            background: #1a4d2e;
+            border-color: #2d5f3f;
+        }
+        
+        .download-btn:hover {
+            background: #2d5f3f;
+            border-color: #3a7050;
+        }
+        
+        .pdf-viewer {
             width: 100%;
-            height: 88vh;
-            border: 1px solid #24242b;
-            border-radius: 14px;
+            height: 85vh;
             background: #0f0f12;
+            border: 1px solid #24242b;
+            border-radius: 12px;
             overflow: hidden;
         }
-        .pdf-container iframe {
+        
+        .pdf-viewer iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
-        .muted {
-            opacity: .78;
-        }
-        .info {
-            font-size: 14px;
-            opacity: 0.7;
-            margin-top: 8px;
-        }
-        .note {
-            color: #888;
+        
+        .footer-note {
+            margin-top: 15px;
+            padding: 12px;
             font-size: 12px;
-            margin-top: 20px;
-            padding: 8px;
+            color: #666;
             background: rgba(136, 136, 136, 0.05);
-            border-radius: 6px;
-            border-left: 1px solid #444;
-            opacity: 0.6;
+            border-radius: 8px;
+            border-left: 2px solid #333;
         }
-        .auto-trad {
-            font-size: 12px;
-            opacity: 0.6;
-            font-style: italic;
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
         }
     </style>
 </head>
 <body>
-    <div class="wrap">
-        <div class="card">
-            <div class="top">
-                <div>
-                    <h1 style="margin:0 0 6px" id="title">Note de terrain MoltBook</h1>
-                    <div class="muted" id="subtitle">une contribution</div>
-                    <div class="info" id="description">
-                        Le document est affiché directement ci-dessous.
-                        <br><span id="version">Version : v1.1</span>
-                        <span id="auto-trad-notice" class="auto-trad" style="display:none;"> - (traduction automatique)</span>
-                    </div>
-                </div>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header-card">
+            <h1 id="main-title">Note de terrain MoltBook</h1>
+            <div class="subtitle" id="subtitle">une contribution</div>
+            <div class="version">
+                Version : v1.1
+                <span class="auto-trad-badge" id="auto-trad-badge">- traduction automatique</span>
             </div>
-            <div class="btn-group">
-                <button class="lang-btn active" id="lang-fr" onclick="setLanguage('fr')">Français</button>
-                <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
-                <a class="btn" id="download-btn" 
-                   href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/raw/main/Note_de_terrain_MoltBook_une_contribution.pdf" 
-                   download>
+            
+            <!-- Contrôles -->
+            <div class="controls">
+                <button id="btn-fr" class="active" onclick="switchLanguage('fr')">
+                    🇫🇷 Français
+                </button>
+                <button id="btn-en" onclick="switchLanguage('en')">
+                    🇬🇧 English
+                </button>
+                <button class="download-btn" id="btn-download" onclick="downloadPDF()">
                     📥 Télécharger le PDF
-                </a>
+                </button>
             </div>
         </div>
-
-        <!-- Intégration du PDF -->
-        <div class="pdf-container">
+        
+        <!-- Visionneuse PDF -->
+        <div class="pdf-viewer">
             <iframe 
-                id="pdf-frame" 
-                src="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf#view=FitH"
-                title="Note de terrain MoltBook - une contribution - PDF">
-                <div style="padding: 20px; text-align: center; color: #ff6b6b;">
-                    <p>Votre navigateur ne peut pas afficher les PDFs.</p>
-                    <p><a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf" style="color: #a0a0c0;">Télécharger le PDF</a></p>
+                id="pdf-iframe"
+                src="./Note_de_terrain_MoltBook_une_contribution.pdf"
+                title="PDF Viewer">
+                <div class="loading">
+                    Chargement du PDF...
                 </div>
             </iframe>
         </div>
-
-        <!-- Note discrète en bas -->
-        <div class="note" id="note">
-            Note : Le PDF est affiché directement dans votre navigateur. 
-            Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.
+        
+        <!-- Note de bas de page -->
+        <div class="footer-note" id="footer-note">
+            Le document s'affiche directement dans votre navigateur. 
+            Si vous rencontrez des problèmes, utilisez le bouton de téléchargement.
         </div>
     </div>
 
     <script>
-        // URLs des PDFs - GitHub Pages
-        const pdfUrls = {
-            fr: "https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Note_de_terrain_MoltBook_une_contribution.pdf",
-            en: "https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf"
-        };
-
-        // URLs de téléchargement direct (raw)
-        const downloadUrls = {
-            fr: "https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/raw/main/Note_de_terrain_MoltBook_une_contribution.pdf",
-            en: "https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/raw/main/Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf"
-        };
-
-        // Noms de fichiers pour le téléchargement
-        const downloadNames = {
-            fr: "Note_de_terrain_MoltBook_une_contribution.pdf",
-            en: "Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf"
-        };
-
-        // Traductions
-        const translations = {
+        // Configuration des fichiers
+        const FILES = {
             fr: {
-                title: "Note de terrain MoltBook",
-                subtitle: "une contribution",
-                description: "Le document est affiché directement ci-dessous.",
-                version: "Version : v1.1",
-                downloadBtn: "📥 Télécharger le PDF",
-                note: "Note : Le PDF est affiché directement dans votre navigateur. Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.",
-                pageTitle: "Note de terrain MoltBook - une contribution",
+                filename: 'Note_de_terrain_MoltBook_une_contribution.pdf',
+                title: 'Note de terrain MoltBook',
+                subtitle: 'une contribution',
+                downloadText: '📥 Télécharger le PDF',
+                footerNote: 'Le document s\'affiche directement dans votre navigateur. Si vous rencontrez des problèmes, utilisez le bouton de téléchargement.',
+                pageTitle: 'Note de terrain MoltBook - une contribution',
                 showAutoTrad: false
             },
             en: {
-                title: "Field Note MoltBook",
-                subtitle: "a contribution",
-                description: "The document is displayed directly below.",
-                version: "Version: v1.1",
-                downloadBtn: "📥 Download PDF (auto-translated)",
-                note: "Note: The PDF is displayed directly in your browser. If the display does not work, use the download button above.",
-                pageTitle: "Field Note MoltBook - a contribution",
+                filename: 'Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf',
+                title: 'Field Note MoltBook',
+                subtitle: 'a contribution',
+                downloadText: '📥 Download PDF (auto-translated)',
+                footerNote: 'The document is displayed directly in your browser. If you encounter problems, use the download button.',
+                pageTitle: 'Field Note MoltBook - a contribution',
                 showAutoTrad: true
             }
         };
-
-        // Fonction pour changer la langue
-        function setLanguage(lang) {
-            // Mettre à jour les boutons de langue
-            document.getElementById('lang-fr').classList.toggle('active', lang === 'fr');
-            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-
+        
+        // État actuel
+        let currentLang = 'fr';
+        
+        // Fonction pour changer de langue
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const config = FILES[lang];
+            
+            // Mettre à jour les boutons
+            document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            
             // Mettre à jour les textes
-            const t = translations[lang];
-            document.getElementById('title').textContent = t.title;
-            document.getElementById('subtitle').textContent = t.subtitle;
-            document.getElementById('description').innerHTML = `${t.description}<br><span id="version">${t.version}</span><span id="auto-trad-notice" class="auto-trad" style="display:${t.showAutoTrad ? 'inline' : 'none'};"> - (traduction automatique)</span>`;
-            document.getElementById('note').textContent = t.note;
-
-            // Mettre à jour le bouton de téléchargement
-            const downloadBtn = document.getElementById('download-btn');
-            downloadBtn.href = downloadUrls[lang];
-            downloadBtn.download = downloadNames[lang];
-            downloadBtn.textContent = t.downloadBtn;
-
-            // Mettre à jour le titre de la page
-            document.title = t.pageTitle;
-
-            // Mettre à jour l'attribut lang de l'élément html
+            document.getElementById('main-title').textContent = config.title;
+            document.getElementById('subtitle').textContent = config.subtitle;
+            document.getElementById('btn-download').textContent = config.downloadText;
+            document.getElementById('footer-note').textContent = config.footerNote;
+            document.title = config.pageTitle;
             document.documentElement.lang = lang;
-
-            // Changer le PDF affiché dans l'iframe
-            const iframe = document.getElementById('pdf-frame');
-            iframe.src = pdfUrls[lang] + '#view=FitH';
-            iframe.title = `${t.title} - ${t.subtitle} - PDF`;
-
-            // Sauvegarder la préférence de langue
-            localStorage.setItem('preferredLanguage', lang);
+            
+            // Afficher/masquer le badge auto-trad
+            document.getElementById('auto-trad-badge').style.display = config.showAutoTrad ? 'inline' : 'none';
+            
+            // Charger le PDF correspondant
+            const iframe = document.getElementById('pdf-iframe');
+            iframe.src = './' + config.filename;
+            
+            // Sauvegarder la préférence
+            localStorage.setItem('preferred-language', lang);
+            
+            console.log('Langue changée vers:', lang, '- Fichier:', config.filename);
         }
-
-        // Charger la langue sauvegardée ou détecter la langue du navigateur
+        
+        // Fonction de téléchargement
+        function downloadPDF() {
+            const config = FILES[currentLang];
+            const link = document.createElement('a');
+            link.href = './' + config.filename;
+            link.download = config.filename;
+            link.click();
+            console.log('Téléchargement demandé:', config.filename);
+        }
+        
+        // Initialisation au chargement de la page
         window.addEventListener('load', function() {
-            // Charger la langue préférée sauvegardée
-            const savedLang = localStorage.getItem('preferredLanguage');
+            // Récupérer la langue sauvegardée
+            const savedLang = localStorage.getItem('preferred-language');
             
             // Détecter la langue du navigateur
-            const browserLang = navigator.language.split('-')[0];
+            const browserLang = navigator.language.startsWith('en') ? 'en' : 'fr';
             
-            // Choisir la langue (sauvegardée > navigateur > français par défaut)
-            const lang = savedLang || (browserLang === 'en' ? 'en' : 'fr');
+            // Utiliser: sauvegardée > navigateur > français par défaut
+            const initialLang = savedLang || browserLang;
             
-            // Appliquer la langue si ce n'est pas le français par défaut
-            if (lang !== 'fr') {
-                setLanguage(lang);
+            // Appliquer la langue
+            if (initialLang !== 'fr') {
+                switchLanguage(initialLang);
             }
+            
+            console.log('Page chargée - Langue initiale:', initialLang);
         });
     </script>
 </body>
 </html>
+
