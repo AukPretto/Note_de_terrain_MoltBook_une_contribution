@@ -79,7 +79,7 @@
             background: #0f0f12;
             overflow: hidden;
         }
-        iframe {
+        embed {
             width: 100%;
             height: 100%;
             border: none;
@@ -135,17 +135,17 @@
         </div>
 
         <!-- Intégration du PDF -->
-        <div class="pdf-container">
-            <iframe 
-                id="pdf-frame" 
-                src="https://mozilla.github.io/pdf.js/web/viewer.html?file=https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf"
+        <div class="pdf-container" id="pdf-container">
+            <embed 
+                id="pdf-embed" 
+                src="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf#view=FitH"
+                type="application/pdf"
                 title="Note de terrain MoltBook - une contribution - PDF">
-            </iframe>
         </div>
 
         <!-- Note discrète en bas -->
         <div class="note" id="note">
-            Note : Le PDF est affiché via le lecteur PDF.js de Mozilla. 
+            Note : Le PDF est affiché directement dans votre navigateur. 
             Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.
         </div>
     </div>
@@ -171,7 +171,7 @@
                 description: "Le document est affiché directement ci-dessous.",
                 version: "Version : v1.1",
                 downloadBtn: "📥 Télécharger le PDF",
-                note: "Note : Le PDF est affiché via le lecteur PDF.js de Mozilla. Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.",
+                note: "Note : Le PDF est affiché directement dans votre navigateur. Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.",
                 pageTitle: "Note de terrain MoltBook - une contribution",
                 showAutoTrad: false
             },
@@ -181,7 +181,7 @@
                 description: "The document is displayed directly below.",
                 version: "Version: v1.1",
                 downloadBtn: "📥 Download PDF (auto-translated)",
-                note: "Note: The PDF is displayed via Mozilla's PDF.js viewer. If the display does not work, use the download button above.",
+                note: "Note: The PDF is displayed directly in your browser. If the display does not work, use the download button above.",
                 pageTitle: "Field Note MoltBook - a contribution",
                 showAutoTrad: true
             }
@@ -212,13 +212,23 @@
             // Mettre à jour l'attribut lang de l'élément html
             document.documentElement.lang = lang;
 
-            // Mettre à jour le titre de l'iframe
-            document.getElementById('pdf-frame').title = `${t.title} - ${t.subtitle} - PDF`;
-
-            // Changer le PDF affiché dans l'iframe via PDF.js
-            const iframe = document.getElementById('pdf-frame');
-            const encodedUrl = encodeURIComponent(pdfUrls[lang]);
-            iframe.src = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodedUrl}`;
+            // Changer le PDF affiché - méthode: recréer l'élément embed
+            const container = document.getElementById('pdf-container');
+            const oldEmbed = document.getElementById('pdf-embed');
+            
+            // Créer un nouvel élément embed
+            const newEmbed = document.createElement('embed');
+            newEmbed.id = 'pdf-embed';
+            newEmbed.src = pdfUrls[lang] + '#view=FitH&toolbar=1';
+            newEmbed.type = 'application/pdf';
+            newEmbed.title = `${t.title} - ${t.subtitle} - PDF`;
+            newEmbed.style.width = '100%';
+            newEmbed.style.height = '100%';
+            newEmbed.style.border = 'none';
+            
+            // Remplacer l'ancien embed par le nouveau
+            container.removeChild(oldEmbed);
+            container.appendChild(newEmbed);
 
             // Sauvegarder la préférence de langue
             localStorage.setItem('preferredLanguage', lang);
@@ -236,7 +246,9 @@
             const lang = savedLang || (browserLang === 'en' ? 'en' : 'fr');
             
             // Appliquer la langue
-            setLanguage(lang);
+            if (lang !== 'fr') {
+                setLanguage(lang);
+            }
         });
     </script>
 </body>
