@@ -47,6 +47,7 @@
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
+            font-family: system-ui;
         }
         a.btn:hover, button.btn:hover {
             border-color: #4a4a58;
@@ -70,12 +71,18 @@
             background: #4a4a58;
             border-color: #6a6a7a;
         }
-        iframe {
+        .pdf-container {
             width: 100%;
             height: 88vh;
             border: 1px solid #24242b;
             border-radius: 14px;
             background: #0f0f12;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
         .muted {
             opacity: .78;
@@ -94,26 +101,11 @@
             border-radius: 6px;
             border-left: 1px solid #444;
             opacity: 0.6;
-            transition: opacity 0.3s;
         }
-        .note:hover {
-            opacity: 0.8;
-        }
-        .note a {
-            color: #a0a0c0;
-            text-decoration: underline;
-        }
-        .note a:hover {
-            color: #c0c0ff;
-        }
-        .success {
-            color: #6bff6b;
-            font-size: 14px;
-            margin-top: 10px;
-            padding: 8px;
-            background: rgba(107, 255, 107, 0.1);
-            border-radius: 6px;
-            border-left: 3px solid #6bff6b;
+        .auto-trad {
+            font-size: 12px;
+            opacity: 0.6;
+            font-style: italic;
         }
     </style>
 </head>
@@ -127,48 +119,39 @@
                     <div class="info" id="description">
                         Le document est affiché directement ci-dessous.
                         <br><span id="version">Version : v1.1</span>
+                        <span id="auto-trad-notice" class="auto-trad" style="display:none;"> - (traduction automatique)</span>
                     </div>
                 </div>
             </div>
-            
             <div class="btn-group">
                 <button class="lang-btn active" id="lang-fr" onclick="setLanguage('fr')">Français</button>
                 <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
-                <a class="btn" id="download-btn" href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf" download>
-                    Télécharger le PDF
+                <a class="btn" id="download-btn" 
+                   href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf" 
+                   download>
+                    📥 Télécharger le PDF
                 </a>
             </div>
-            
-            <div id="status-message"></div>
         </div>
-        
+
         <!-- Intégration du PDF -->
-        <iframe src="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf" 
-                id="pdf-frame"
+        <div class="pdf-container">
+            <iframe 
+                id="pdf-frame" 
+                src="https://docs.google.com/viewer?url=https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf&embedded=true"
                 title="Note de terrain MoltBook - une contribution - PDF">
-            <div id="fallback-message">
-                Votre navigateur ne supporte pas l'affichage des PDF. 
-                <br><br>
-                Vous pouvez :
-                <ul>
-                    <li><a href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf" target="_blank">Accéder au PDF directement</a></li>
-                    <li><a href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/tag/v1.1" target="_blank">Voir la release v1.1 sur GitHub</a></li>
-                    <li><a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/" target="_blank">Visiter la page GitHub Pages</a></li>
-                </ul>
-            </div>
-        </iframe>
-        
-        <!-- Note discrète en bas du document -->
+            </iframe>
+        </div>
+
+        <!-- Note discrète en bas -->
         <div class="note" id="note">
-            Note : Si le PDF ne s'affiche pas, vérifiez que le fichier existe à cette adresse :
-            <br><a id="pdf-link" href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf" target="_blank">
-                https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf
-            </a>
+            Note : Le PDF est affiché via Google Docs Viewer. 
+            Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.
         </div>
     </div>
-    
+
     <script>
-        // URLs des PDFs depuis la release v1.1 - CORRIGÉ avec "auto-tard_eng"
+        // URLs des PDFs depuis la release v1.1
         const pdfUrls = {
             fr: "https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Note_de_terrain_MoltBook_une_contribution.pdf",
             en: "https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/download/v1.1/Field_Note_Moltbook_a_contribution_auto-tard_eng.pdf"
@@ -187,132 +170,58 @@
                 subtitle: "une contribution",
                 description: "Le document est affiché directement ci-dessous.",
                 version: "Version : v1.1",
-                note: "Note : Si le PDF ne s'affiche pas, vérifiez que le fichier existe à cette adresse :",
-                downloadBtn: "Télécharger le PDF",
-                fallback: {
-                    title: "Votre navigateur ne supporte pas l'affichage des PDF.",
-                    options: "Vous pouvez :",
-                    option1: "Accéder au PDF directement",
-                    option2: "Voir la release v1.1 sur GitHub",
-                    option3: "Visiter la page GitHub Pages"
-                },
-                pageTitle: "Note de terrain MoltBook - une contribution"
+                downloadBtn: "📥 Télécharger le PDF",
+                note: "Note : Le PDF est affiché via Google Docs Viewer. Si l'affichage ne fonctionne pas, utilisez le bouton de téléchargement ci-dessus.",
+                pageTitle: "Note de terrain MoltBook - une contribution",
+                showAutoTrad: false
             },
             en: {
                 title: "Field Note MoltBook",
                 subtitle: "a contribution",
                 description: "The document is displayed directly below.",
                 version: "Version: v1.1",
-                note: "Note: If the PDF does not display, check that the file exists at this address:",
-                downloadBtn: "Download PDF",
-                fallback: {
-                    title: "Your browser does not support PDF display.",
-                    options: "You can:",
-                    option1: "Access the PDF directly",
-                    option2: "View the v1.1 release on GitHub",
-                    option3: "Visit the GitHub Pages page"
-                },
-                pageTitle: "Field Note MoltBook - a contribution"
+                downloadBtn: "📥 Download PDF (auto-translated)",
+                note: "Note: The PDF is displayed via Google Docs Viewer. If the display does not work, use the download button above.",
+                pageTitle: "Field Note MoltBook - a contribution",
+                showAutoTrad: true
             }
         };
-
-        // Fonction pour afficher un message de statut
-        function showStatus(message, type = 'error') {
-            const statusDiv = document.getElementById('status-message');
-            if (type === 'success') {
-                statusDiv.className = 'success';
-            } else {
-                statusDiv.className = 'note';
-                statusDiv.style.opacity = '0.8';
-            }
-            statusDiv.innerHTML = message;
-            statusDiv.style.display = 'block';
-            
-            // Cacher le message après 5 secondes
-            setTimeout(() => {
-                statusDiv.style.display = 'none';
-            }, 5000);
-        }
 
         // Fonction pour changer la langue
         function setLanguage(lang) {
             // Mettre à jour les boutons de langue
             document.getElementById('lang-fr').classList.toggle('active', lang === 'fr');
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-            
+
             // Mettre à jour les textes
             const t = translations[lang];
             document.getElementById('title').textContent = t.title;
             document.getElementById('subtitle').textContent = t.subtitle;
-            document.getElementById('description').innerHTML = 
-                `${t.description}<br><span id="version">${t.version}</span>`;
-            document.getElementById('note').innerHTML = 
-                `${t.note}<br><a id="pdf-link" href="${pdfUrls[lang]}" target="_blank">
-                    ${pdfUrls[lang]}
-                </a>`;
-            
+            document.getElementById('description').innerHTML = `${t.description}<br><span id="version">${t.version}</span><span id="auto-trad-notice" class="auto-trad" style="display:${t.showAutoTrad ? 'inline' : 'none'};"> - (traduction automatique)</span>`;
+            document.getElementById('note').textContent = t.note;
+
             // Mettre à jour le bouton de téléchargement
             const downloadBtn = document.getElementById('download-btn');
             downloadBtn.href = pdfUrls[lang];
             downloadBtn.download = downloadNames[lang];
             downloadBtn.textContent = t.downloadBtn;
-            
+
             // Mettre à jour le titre de la page
             document.title = t.pageTitle;
-            
+
             // Mettre à jour l'attribut lang de l'élément html
             document.documentElement.lang = lang;
-            
+
             // Mettre à jour le titre de l'iframe
             document.getElementById('pdf-frame').title = `${t.title} - ${t.subtitle} - PDF`;
-            
-            // Mettre à jour le message de fallback de l'iframe
-            const fallbackDiv = document.getElementById('fallback-message');
-            if (fallbackDiv) {
-                fallbackDiv.innerHTML = `
-                    ${t.fallback.title}
-                    <br><br>
-                    ${t.fallback.options}
-                    <ul>
-                        <li><a href="${pdfUrls[lang]}" target="_blank">${t.fallback.option1}</a></li>
-                        <li><a href="https://github.com/AukPretto/Note_de_terrain_MoltBook_une_contribution/releases/tag/v1.1" target="_blank">${t.fallback.option2}</a></li>
-                        <li><a href="https://aukpretto.github.io/Note_de_terrain_MoltBook_une_contribution/" target="_blank">${t.fallback.option3}</a></li>
-                    </ul>
-                `;
-            }
-            
-            // Changer le PDF affiché dans l'iframe
+
+            // Changer le PDF affiché dans l'iframe via Google Docs Viewer
             const iframe = document.getElementById('pdf-frame');
-            const timestamp = new Date().getTime();
-            iframe.src = pdfUrls[lang] + (pdfUrls[lang].includes('?') ? '&' : '?') + 't=' + timestamp;
-            
-            // Vérifier si le PDF est accessible
-            checkPDFAccessibility(lang, pdfUrls[lang]);
-            
+            const encodedUrl = encodeURIComponent(pdfUrls[lang]);
+            iframe.src = `https://docs.google.com/viewer?url=${encodedUrl}&embedded=true`;
+
             // Sauvegarder la préférence de langue
             localStorage.setItem('preferredLanguage', lang);
-        }
-
-        // Fonction pour vérifier l'accessibilité du PDF
-        function checkPDFAccessibility(lang, url) {
-            fetch(url, { method: 'HEAD', mode: 'no-cors' })
-                .then(response => {
-                    showStatus(
-                        lang === 'fr' 
-                            ? '✓ PDF disponible et accessible' 
-                            : '✓ PDF available and accessible',
-                        'success'
-                    );
-                })
-                .catch(error => {
-                    console.error('Erreur de chargement :', error);
-                    showStatus(
-                        lang === 'fr'
-                            ? '⚠ Impossible de vérifier l\'accessibilité du PDF. Le fichier peut ne pas exister ou être inaccessible.'
-                            : '⚠ Unable to verify PDF accessibility. The file may not exist or be inaccessible.',
-                        'error'
-                    );
-                });
         }
 
         // Charger la langue sauvegardée ou détecter la langue du navigateur
